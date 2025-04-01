@@ -1,3 +1,6 @@
+using ITBGameJamAPI.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace ITBGameJamAPI
 {
     public class Program
@@ -7,6 +10,8 @@ namespace ITBGameJamAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            var connString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connString));
 
             builder.Services.AddControllers();
 
