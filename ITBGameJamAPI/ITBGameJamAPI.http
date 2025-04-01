@@ -1,0 +1,6 @@
+@ITBGameJamAPI_HostAddress = http://localhost:5125
+
+GET {{ITBGameJamAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
