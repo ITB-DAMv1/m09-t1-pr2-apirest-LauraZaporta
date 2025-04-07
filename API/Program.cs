@@ -4,12 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
 using System.Text;
-using System;
 using API.Model;
-using Microsoft.Build.Evaluation;
 
 namespace API
 {
@@ -29,7 +25,7 @@ namespace API
             {
                 // Configuració de contrasenyes
                 options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 6;
+                options.Password.RequiredLength = 10;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = true;
@@ -110,12 +106,10 @@ namespace API
                 });
             });
 
-            //********
+            //********************************
             var app = builder.Build();
-            //*******
 
-            //***** Middlewares ******//
-
+            //Middleware
             //App pipeline
 
             // Crear rols inicials: Admin i Editor
