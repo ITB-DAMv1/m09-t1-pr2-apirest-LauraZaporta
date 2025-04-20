@@ -1,20 +1,27 @@
 ﻿@page
 @model Client.Pages.UsersXatModel
 @{
-    ViewData["Title"] = "Xat en temps real";
+    ViewData["Title"] = "Live chat";
 }
 
-<h2>Xat en temps real</h2>
+<div class="spacer-top text-center">
+    <h2 class="display-4 spacer-bottom">LIVE CHAT</h2>
 
-<label for="usuari">Nom:</label>
-<input id="usuari" placeholder="Nom d'usuari" />
-<br />
+    <div class="spacer-bottom">
+        <label for="usuari">Nom:</label>
+        <input id="usuari" placeholder="Nom d'usuari" />
+        <br />
+    </div>
+    <div class="spacer-bottom">
+        <label for="missatge">Missatge:</label>
+        <input id="missatge" placeholder="Escriu un missatge" />
+    </div>
 
-<label for="missatge">Missatge:</label>
-<input id="missatge" placeholder="Escriu un missatge" />
-<button onclick="sendMessage()">Envia</button>
-
-<ul id="missatges"></ul>
+    <button class="prettyButton" onclick="sendMessage()">Envia</button>
+</div>
+<div class="listContainer">
+    <ul id="missatges" class="messagesList"></ul>
+</div>
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
