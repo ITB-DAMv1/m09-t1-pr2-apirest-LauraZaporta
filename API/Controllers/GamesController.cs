@@ -198,5 +198,30 @@ namespace API.Controllers
                 return BadRequest("Error al recuperar el joc: " + ex.Message);
             }
         }
+
+        // Votació
+        // -------
+        [Authorize] //Per tots els rols existents
+        [HttpPut("vote")]
+        public async Task<ActionResult<Game>> VoteGame(int id)
+        {
+            try
+            {
+                var game = await _context.Games.FindAsync(id);
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+                if (game == null || user == null) { return NotFound("El joc a votar no trobat o l'usuari no és vàlid"); }
+
+                game.UsersWhoVoted.Add(user);
+                user.VotedGames.Add(game);
+                await _context.SaveChangesAsync();
+
+                return Ok($"Joc {game.Title} votat!");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error en la votació: {ex.Message}");
+            }
+        }
     }
 }
