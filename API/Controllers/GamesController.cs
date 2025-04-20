@@ -3,6 +3,7 @@ using API.DTOs;
 using API.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -66,6 +67,48 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 return BadRequest($"Error en la inserció: {ex.Message}");
+            }
+        }
+
+        // Edició de jocs
+        // --------------
+        [Authorize(Roles = "Admin")]
+        [HttpPut]
+        public async Task<ActionResult<Game>> UpdateGame(GameUpdateDTO gameInput)
+        {
+            if (gameInput == null) { return BadRequest("No hi ha dades a actualitzar; el joc és buit!"); }
+
+            try
+            {
+                var games = await _context.Games.ToListAsync();
+                var game = games.Where(g => g.Title == gameInput.GameToUpdate).FirstOrDefault();
+                if (game == null) { return NotFound("El joc a actualitzar no trobat"); }
+
+                if (gameInput.Title != null) { game.Title = gameInput.Title; };
+                if (gameInput.Description != null) { game.Description = gameInput.Description; };
+                if (gameInput.TeamName != null) { game.TeamName = gameInput.TeamName; };
+                if (gameInput.Image != null && gameInput.Image.Length > 0)
+                {
+                    var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+                    Directory.CreateDirectory(imagesFolder);
+
+                    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(gameInput.Image.FileName);
+                    var filePath = Path.Combine(imagesFolder, uniqueFileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await gameInput.Image.CopyToAsync(stream); 
+                    }
+
+                    game.ImagePath = Path.Combine("images", uniqueFileName).Replace("\\", "/");
+                }
+
+                await _context.SaveChangesAsync();
+                return Ok($"Joc {game.Title} actualitzat!");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error en l'actualització: {ex.Message}");
             }
         }
     }
