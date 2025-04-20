@@ -112,7 +112,7 @@ namespace API
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    policy.WithOrigins("https://localhost:----") // Adreça client
+                    policy.WithOrigins("https://localhost:7027") // Adreça client
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials();
