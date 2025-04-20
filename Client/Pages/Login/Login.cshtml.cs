@@ -28,7 +28,7 @@ namespace Client.Pages.Shared.Login
 
             try
             {
-                var client = _httpClient.CreateClient("ApiFilms");
+                var client = _httpClient.CreateClient("ApiGames");
                 var response = await client.PostAsJsonAsync("api/Auth/login", Login);
 
                 if (response.IsSuccessStatusCode)
@@ -38,7 +38,7 @@ namespace Client.Pages.Shared.Login
 
                     if (!string.IsNullOrEmpty(token))
                     {
-                        //Guardem en sessio (cookies) el Token amb la clau "AuthToken"
+                        //Guardem en sessió (cookies) el Token amb la clau "AuthToken"
                         HttpContext.Session.SetString("AuthToken", token);
                         _logger.LogInformation("Login susccesfull");
                         return RedirectToPage("/Index");
