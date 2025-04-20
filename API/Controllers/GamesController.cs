@@ -131,5 +131,72 @@ namespace API.Controllers
                 return BadRequest($"Error en l'eliminació: {ex.Message}");
             }
         }
+
+        // Consulta de jocs
+        // ----------------
+        // TOTS
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Game>>> GetAll()
+        {
+            try
+            {
+                var games = await _context.Games.ToListAsync(); //Obtenim tots els jocs de la base de dades
+                if (games.Count == 0) { return NotFound("No hi ha cap joc"); }
+                return Ok(games); //Tot bé al servidor -> retorna la llista de jocs
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al recuperar els jocs: " + ex.Message);
+            }
+        }
+        // Per títol
+        [HttpGet("titol")]
+        public async Task<ActionResult<IEnumerable<Game>>> GetByName(string name)
+        {
+            try
+            {
+                var games = await _context.Games.ToListAsync(); //Obtenim tots els jocs de la base de dades
+                if (games.Count == 0) { return NotFound("No hi ha cap joc"); }
+                var gamesWithName = games.Where(g => g.Title.ToLower().Contains(name.ToLower())); //Filtrant per nom
+                if (gamesWithName.Count() == 0) { return NotFound("No hi ha cap joc amb aquest nom"); }
+                return Ok(gamesWithName); //Tot bé al servidor -> retorna la llista de jocs
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al recuperar el joc: " + ex.Message);
+            }
+        }
+        // Per equip desenvolupador
+        [HttpGet("teamname")]
+        public async Task<ActionResult<IEnumerable<Game>>> GetByTeam(string team)
+        {
+            try
+            {
+                var games = await _context.Games.ToListAsync(); //Obtenim tots els jocs de la base de dades
+                if (games.Count == 0) { return NotFound("No hi ha cap joc"); }
+                var gamesWithTeam = games.Where(g => g.TeamName.ToLower().Contains(team.ToLower())); //Filtrant per equip
+                if (gamesWithTeam.Count() == 0) { return NotFound("No hi ha cap joc amb aquest equip"); }
+                return Ok(gamesWithTeam); //Tot bé al servidor -> retorna la llista de jocs
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al recuperar el joc: " + ex.Message);
+            }
+        }
+        // Per id
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Game>> GetById(int id)
+        {
+            try
+            {
+                var gameWithId = await _context.Games.FindAsync(id); //Obtenim tots els jocs de la base de dades
+                if (gameWithId == null) { return NotFound("No hi ha cap joc amb aquest id"); }
+                return Ok(gameWithId); //Tot bé al servidor -> retorna joc
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al recuperar el joc: " + ex.Message);
+            }
+        }
     }
 }
