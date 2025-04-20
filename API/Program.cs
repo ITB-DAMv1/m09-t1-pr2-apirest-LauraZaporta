@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using API.Model;
+using API.Hubs;
 
 namespace API
 {
@@ -106,6 +107,21 @@ namespace API
                 });
             });
 
+            // CORS
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.WithOrigins("https://localhost:----") // Adreça client
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                });
+            });
+
+            // S'afegiex signal
+            builder.Services.AddSignalR();
+
             //********************************
             var app = builder.Build();
 
@@ -137,6 +153,9 @@ namespace API
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.UseCors();
+            app.MapHub<XatHub>("/xat");
 
             app.Run();
         }
