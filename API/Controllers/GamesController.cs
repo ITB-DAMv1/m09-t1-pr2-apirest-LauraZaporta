@@ -89,6 +89,15 @@ namespace API.Controllers
                 if (gameInput.TeamName != null) { game.TeamName = gameInput.TeamName; };
                 if (gameInput.Image != null && gameInput.Image.Length > 0)
                 {
+                    if (game.ImagePath != null) // Per esborrar la imatge del joc de la carpeta images abans de substiturir-la
+                    {
+                        string? imageFullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", game.ImagePath);
+                        if (System.IO.File.Exists(imageFullPath))
+                        {
+                            System.IO.File.Delete(imageFullPath); // Espera una ruta absoluta
+                        }
+                    }
+
                     var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
                     Directory.CreateDirectory(imagesFolder);
 
@@ -122,9 +131,19 @@ namespace API.Controllers
             {
                 var game = await _context.Games.FindAsync(id);
                 if (game == null) { return NotFound("El joc a eliminar no trobat"); }
+
+                if (game.ImagePath != null) // Per esborrar la imatge del joc de la carpeta images
+                {
+                    string? imageFullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", game.ImagePath);
+                    if (System.IO.File.Exists(imageFullPath))
+                    {
+                        System.IO.File.Delete(imageFullPath); // Espera una ruta absoluta
+                    }
+                }
+
                 _context.Games.Remove(game);
                 await _context.SaveChangesAsync();
-                return Ok($"Joc {game.Title} eliminat");
+                return Ok($"Joc {game.Title} eliminat!");
             }
             catch (Exception ex)
             {
@@ -167,18 +186,22 @@ namespace API.Controllers
 
         // Votació
         // -------
-        [Authorize] //Per tots els rols existents
+        [Authorize] //Per tots els rols existents 
         [HttpPut("vote")]
         public async Task<ActionResult<Game>> VoteGame(int id)
         {
             try
             {
-                var game = await _context.Games.FindAsync(id);
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+                var game = await _context.Games
+                    .Include(g => g.UsersWhoVoted)
+                    .FirstAsync(g => g.Id == id);
+                var user = await _context.Users
+                    .Include(g => g.VotedGames)
+                    .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
 
                 if (game == null || user == null) { return NotFound("El joc a votar no trobat o l'usuari no és vàlid"); }
 
-                if (game.UsersWhoVoted.Contains(user)) { 
+                if (game.UsersWhoVoted.Contains(user)) { // Si l'usuari ja ha votat prèviament al joc, el vot es retira
 
                     game.UsersWhoVoted.Remove(user);
                     user.VotedGames.Remove(game);
@@ -186,7 +209,7 @@ namespace API.Controllers
 
                     return Ok($"Has retirat el vot del joc {game.Title}!");
                 }
-                else
+                else // Sinó, s'afegeix un vot
                 {
                     game.UsersWhoVoted.Add(user);
                     user.VotedGames.Add(game);
