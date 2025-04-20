@@ -111,5 +111,25 @@ namespace API.Controllers
                 return BadRequest($"Error en l'actualització: {ex.Message}");
             }
         }
+
+        // Eliminació de jocs
+        // ------------------
+        [Authorize(Roles = "Admin")]
+        [HttpDelete]
+        public async Task<ActionResult<Game>> DeleteGame(int id)
+        {
+            try
+            {
+                var game = await _context.Games.FindAsync(id);
+                if (game == null) { return NotFound("El joc a eliminar no trobat"); }
+                _context.Games.Remove(game);
+                await _context.SaveChangesAsync();
+                return Ok($"Joc {game.Title} eliminat");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error en l'eliminació: {ex.Message}");
+            }
+        }
     }
 }
