@@ -10,5 +10,6 @@ namespace API.DTOs
         public string Description { get; set; }
         [Required]
         public string TeamName { get; set; }
+        public IFormFile? Image { get; set; }
     }
 }
