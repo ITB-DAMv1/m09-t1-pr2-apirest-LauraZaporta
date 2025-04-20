@@ -36,7 +36,7 @@ namespace API.Controllers
 
             return BadRequest(resultat.Errors);
         }
-        [HttpPost("admin/register")]
+        [HttpPost("register/admin")]
         public async Task<IActionResult> AdminRegister([FromBody] RegisterDTO model)
         {
             var usuari = new User { UserName = model.Username, Email = model.Email };
