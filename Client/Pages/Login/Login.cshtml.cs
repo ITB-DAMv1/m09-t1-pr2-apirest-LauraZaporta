@@ -12,6 +12,9 @@ namespace Client.Pages.Shared.Login
         [BindProperty]
         public LoginDTO Login { get; set; } = new();
         public string? ErrorMessage { get; set; }
+        [TempData]
+        public string? SuccessMessage { get; set; }
+
 
         public LoginModel(IHttpClientFactory httpClient, ILogger<LoginModel> logging)
         {

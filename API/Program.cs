@@ -26,7 +26,7 @@ namespace API
             {
                 // Configuració de contrasenyes
                 options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 10;
+                options.Password.RequiredLength = 6;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = true;

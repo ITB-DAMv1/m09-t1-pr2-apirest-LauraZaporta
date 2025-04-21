@@ -4,11 +4,22 @@
     ViewData["Title"] = "Inici de sessió";
 }
 
+<style>
+    .fade-out {
+        transition: opacity 1s ease-out;
+        opacity: 0;
+    }
+</style>
+
 <h2>Incia sessió</h2>
 
 @if (!string.IsNullOrEmpty(Model.ErrorMessage))
 {
     <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success">@Model.SuccessMessage</div>
 }
 
 <form method="post">
@@ -26,5 +37,14 @@
 </form>
 
 @section Scripts {
+    <script>
+        setTimeout(() => {
+            const successAlert = document.querySelector('.alert-success');
+            if (successAlert) {
+                successAlert.classList.add('fade-out');
+                setTimeout(() => successAlert.remove(), 1000); // S'elimina 1s després
+            }
+        }, 5000);
+    </script>
     <partial name="_ValidationScriptsPartial" />
 }
