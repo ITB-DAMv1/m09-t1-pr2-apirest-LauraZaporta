@@ -54,3 +54,14 @@ body {
     display: inline-block;
     text-align: left;
 }
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+table th, table td {
+    padding: 8px;
+    text-align: center;
+}

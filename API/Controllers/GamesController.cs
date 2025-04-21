@@ -154,7 +154,7 @@ namespace API.Controllers
         // Consulta de jocs
         // ----------------
         // TOTS
-        [HttpGet]
+        [HttpGet("allGames")]
         public async Task<ActionResult<IEnumerable<Game>>> GetAll()
         {
             try
