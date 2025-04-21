@@ -30,13 +30,17 @@ namespace API.Controllers
         {
             var usuari = new User { UserName = model.Username, Email = model.Email };
             var resultat = await _userManager.CreateAsync(usuari, model.Password);
+            var resultatRol = new IdentityResult();
 
-            if (resultat.Succeeded)
+            if (resultat.Succeeded) {
+                resultatRol = await _userManager.AddToRoleAsync(usuari, "User");
+            }
+            if (resultat.Succeeded && resultatRol.Succeeded)
                 return Ok("Usuari registrat");
 
             return BadRequest(resultat.Errors);
         }
-        [HttpPost("admin/register")]
+        [HttpPost("register/admin")]
         public async Task<IActionResult> AdminRegister([FromBody] RegisterDTO model)
         {
             var usuari = new User { UserName = model.Username, Email = model.Email };
@@ -49,7 +53,7 @@ namespace API.Controllers
             }
 
             if (resultat.Succeeded && resultatRol.Succeeded)
-                return Ok("Usuari registrat");
+                return Ok("Admin registrat");
 
             return BadRequest(resultat.Errors);
         }
