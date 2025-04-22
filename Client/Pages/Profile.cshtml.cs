@@ -5,8 +5,8 @@ namespace Client.Pages
 {
     public class ProfileModel : PageModel
     {
-        public string? UserName { get; set; }
         public string? Email { get; set; }
+        public string? UserName { get; set; }
         public bool LoggedIn { get; set; } = false;
 
         public ProfileModel()
@@ -15,10 +15,10 @@ namespace Client.Pages
 
         public IActionResult OnGet()
         {
-            UserName = HttpContext.Session.GetString("UserName");
             Email = HttpContext.Session.GetString("Email");
+            UserName = HttpContext.Session.GetString("UserName");
 
-            if (!string.IsNullOrEmpty(UserName))
+            if (!string.IsNullOrEmpty(Email))
             {
                 LoggedIn = true;
             }
