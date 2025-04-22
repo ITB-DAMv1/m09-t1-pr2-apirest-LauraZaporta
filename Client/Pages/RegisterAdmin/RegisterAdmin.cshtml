@@ -1,0 +1,41 @@
+﻿@page
+@model Client.Pages.Shared.Register.RegisterAdminModel
+@{
+    ViewData["Title"] = "Registre";
+}
+
+<div class="spacer-top"></div>
+<div class="spacer-top"></div>
+<h2>Registre d'admins</h2>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success">@Model.SuccessMessage</div>
+}
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Register.Email"></label>
+        <input asp-for="Register.Email" class="form-control" />
+        <span asp-validation-for="Register.Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Register.Username"></label>
+        <input asp-for="Register.Username" class="form-control" />
+        <span asp-validation-for="Register.Username" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Register.Password"></label>
+        <input type="password" asp-for="Register.Password" class="form-control" />
+        <span asp-validation-for="Register.Password" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Entrar</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

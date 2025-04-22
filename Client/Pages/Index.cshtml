@@ -1,0 +1,60 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <div class="spacer-top"></div>
+    <h1 class="display-4">TOP 10 GAMES</h1>
+    <div class="spacer-bottom"></div>
+</div>
+<div>
+    @if (!Model.TopGames.Any())
+    {
+        <p>No s'han trobat jocs.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Títol</th>
+                    <th>Dev team</th>
+                    <th>Vots</th>
+                    <th>Més</th>
+                    <th>Vot Actiu</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var game in Model.TopGames)
+                {
+                    <tr>
+                        <td>@game.Title</td>
+                        <td>@game.TeamName</td>
+                        <td>@game.VoteCount</td>
+                        <td>
+                            <a href="/DetailPage?id=@game.Id" class="btn btn-outline-info">Detalls</a>
+                        </td>
+                        <td>
+                            @if (Model.LoggedIn)
+                            {
+                                <form method="post" asp-page-handler="Vote" asp-route-id="@game.Id" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="VotActiu">
+                                        <i class="bi bi-hand-thumbs-down"></i> Votar/Retirar vot
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <button class="btn btn-outline-secondary btn-sm" disabled title="Votar (Només usuaris registrats)">
+                                    <i class="bi bi-hand-thumbs-up"></i> Votar
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
