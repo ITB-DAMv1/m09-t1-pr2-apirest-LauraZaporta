@@ -1,0 +1,13 @@
+﻿@page
+@model Client.Pages.ProfileModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="spacer-top"></div>
+<h1>El meu perfil</h1>
+
+<div class="alert alert-info" role="alert">
+    <p>Usuari: <strong>@Model.UserName</strong></p>
+    <p>Email: <strong>@Model.Email</strong></p>
+</div>

@@ -164,6 +164,7 @@ namespace API.Controllers
                                   .ToListAsync();
                 var gameDTOs = games.Select(game => new GameGetDTO
                 {
+                    Id = game.Id,
                     Title = game.Title,
                     Description = game.Description,
                     TeamName = game.TeamName,
@@ -180,13 +181,28 @@ namespace API.Controllers
         }
         // Per id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Game>> GetById(int id)
+        public async Task<ActionResult<GameGetDTO>> GetById(int id)
         {
             try
             {
-                var gameWithId = await _context.Games.FindAsync(id); //Obtenim tots els jocs de la base de dades
-                if (gameWithId == null) { return NotFound("No hi ha cap joc amb aquest id"); }
-                return Ok(gameWithId); //Tot bé al servidor -> retorna joc
+                var game = await _context.Games
+                    .Include(g => g.UsersWhoVoted)
+                    .FirstOrDefaultAsync(g => g.Id == id);
+
+                if (game == null)
+                    return NotFound("No hi ha cap joc amb aquest id");
+
+                var gameDto = new GameGetDTO
+                {
+                    Id = game.Id,
+                    Title = game.Title,
+                    Description = game.Description,
+                    TeamName = game.TeamName,
+                    ImagePath = game.ImagePath,
+                    VoteCount = game.UsersWhoVoted?.Count ?? 0
+                };
+
+                return Ok(gameDto);
             }
             catch (Exception ex)
             {

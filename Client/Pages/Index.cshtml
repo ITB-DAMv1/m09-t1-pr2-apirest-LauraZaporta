@@ -22,6 +22,7 @@
                     <th>Títol</th>
                     <th>Dev team</th>
                     <th>Vots</th>
+                    <th>Accions</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,6 +32,9 @@
                         <td>@game.Title</td>
                         <td>@game.TeamName</td>
                         <td>@game.VoteCount</td>
+                        <td>
+                            <a href="/DetailPage?id=@game.Id" class="btn btn-outline-info">Detalls</a>
+                        </td>
                     </tr>
                 }
             </tbody>
