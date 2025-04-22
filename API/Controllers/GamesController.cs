@@ -154,14 +154,24 @@ namespace API.Controllers
         // Consulta de jocs
         // ----------------
         // TOTS
-        [HttpGet]
+        [HttpGet("allGames")]
         public async Task<ActionResult<IEnumerable<Game>>> GetAll()
         {
             try
             {
-                var games = await _context.Games.ToListAsync(); //Obtenim tots els jocs de la base de dades
-                if (games.Count == 0) { return NotFound("No hi ha cap joc"); }
-                return Ok(games); //Tot bé al servidor -> retorna la llista de jocs
+                var games = await _context.Games
+                                  .Include(g => g.UsersWhoVoted)
+                                  .ToListAsync();
+                var gameDTOs = games.Select(game => new GameGetDTO
+                {
+                    Title = game.Title,
+                    Description = game.Description,
+                    TeamName = game.TeamName,
+                    ImagePath = game.ImagePath,
+                    VoteCount = game.UsersWhoVoted.Count
+                }).ToList();
+
+                return Ok(gameDTOs);
             }
             catch (Exception ex)
             {

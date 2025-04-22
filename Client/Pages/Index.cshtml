@@ -5,6 +5,35 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="spacer-top"></div>
+    <h1 class="display-4">TOP 10 GAMES</h1>
+    <div class="spacer-bottom"></div>
+</div>
+<div>
+    @if (!Model.TopGames.Any())
+    {
+        <p>No s'han trobat jocs.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Títol</th>
+                    <th>Dev team</th>
+                    <th>Vots</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var game in Model.TopGames)
+                {
+                    <tr>
+                        <td>@game.Title</td>
+                        <td>@game.TeamName</td>
+                        <td>@game.VoteCount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>
