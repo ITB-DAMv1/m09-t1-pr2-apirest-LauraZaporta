@@ -1,4 +1,5 @@
-using System.Net.Http;
+using System.Net;
+using System.Net.Http.Headers;
 using System.Text.Json;
 using Client.DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ namespace Client.Pages
         private readonly ILogger<IndexModel> _logger;
         private readonly IHttpClientFactory _httpClientFactory;
 
+        public bool LoggedIn { get; private set; } = false;
         public List<GameGetDTO> Games { get; set; } = new List<GameGetDTO>();
         public List<GameGetDTO> TopGames { get; set; } = new List<GameGetDTO>();
 
@@ -23,6 +25,17 @@ namespace Client.Pages
         public async Task OnGet()
         {
             var client = _httpClientFactory.CreateClient("ApiGames");
+            var token = HttpContext.Session.GetString("AuthToken");
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                LoggedIn = true;
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+            else
+            {
+                LoggedIn = false;
+            }
 
             try
             {
@@ -48,6 +61,37 @@ namespace Client.Pages
             {
                 _logger.LogError($"{ex.Message}");
             }
+        }
+        public async Task<IActionResult> OnPostVoteAsync(int id)
+        {
+            var token = HttpContext.Session.GetString("AuthToken");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToPage("/Login/Login");
+            }
+
+            var client = _httpClientFactory.CreateClient("ApiGames");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            try
+            {
+                var apiUrl = $"api/Games/vote/{id}";
+                var request = new HttpRequestMessage(HttpMethod.Put, apiUrl);
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    _logger.LogInformation($"Vot afegit correctament. ID: {id}");
+                    TempData["SuccessMessage"] = "Has votat!";
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error inesperat!");
+            }
+
+            return RedirectToPage();
         }
     }
 }

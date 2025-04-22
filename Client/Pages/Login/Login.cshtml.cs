@@ -1,4 +1,6 @@
 using Client.DTOs;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -41,9 +43,22 @@ namespace Client.Pages.Shared.Login
 
                     if (!string.IsNullOrEmpty(token))
                     {
-                        //Guardem en sessió (cookies) el Token amb la clau "AuthToken"
                         HttpContext.Session.SetString("AuthToken", token);
-                        _logger.LogInformation("Login susccesfull");
+
+                        // Decode the JWT token
+                        var handler = new JwtSecurityTokenHandler();
+                        var jwtToken = handler.ReadJwtToken(token);
+
+                        var userName = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+                        var email = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+                        if (!string.IsNullOrEmpty(userName))
+                            HttpContext.Session.SetString("UserName", userName);
+
+                        if (!string.IsNullOrEmpty(email))
+                            HttpContext.Session.SetString("Email", email);
+
+                        _logger.LogInformation("Login correcte");
                         return RedirectToPage("/Index");
                     }
                 }

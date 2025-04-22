@@ -1,0 +1,47 @@
+﻿@page
+@model Client.Pages.DetailPageModel
+@{
+    ViewData["Title"] = "Detalls del Joc";
+}
+
+<div class="container mt-5">
+    @if (Model.Game == null)
+    {
+        <div class="alert alert-warning text-center" role="alert">
+            No s'han pogut carregar les dades del joc.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-lg">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    @if (!string.IsNullOrEmpty(Model.Game.ImagePath))
+                    {
+                        <img src="https://localhost:7051/@Model.Game.ImagePath" alt="Imatge del joc" class="img-fluid rounded-start w-100 h-100 object-fit-cover" />
+                    }
+                    else
+                    {
+                        <div class="d-flex justify-content-center align-items-center bg-secondary text-white h-100">
+                            <p class="text-center p-4">Sense imatge</p>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h2 class="card-title">@Model.Game.Title</h2>
+                        <div class="spacer-top"></div>
+                        <p class="card-text"><strong>Equip de desenvolupament:</strong> @Model.Game.TeamName</p>
+                        <p class="card-text"><strong>Descripció:</strong></p>
+                        <p class="card-text">@Model.Game.Description</p>
+                        <p class="card-text">
+                            <strong>Vots:</strong>
+                            <span class="badge bg-primary">@Model.Game.VoteCount</span>
+                        </p>
+                        <a href="/" class="btn btn-outline-primary mt-3">Tornar a l'inici</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

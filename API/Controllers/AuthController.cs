@@ -70,6 +70,7 @@ namespace API.Controllers
 
             var claims = new List<Claim>()
             {
+                new Claim(ClaimTypes.Email, usuari.Email),
                 new Claim(ClaimTypes.Name, usuari.UserName),
                 new Claim(ClaimTypes.NameIdentifier, usuari.Id.ToString())
             };
