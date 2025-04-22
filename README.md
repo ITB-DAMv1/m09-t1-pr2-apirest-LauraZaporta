@@ -69,3 +69,5 @@ A les APIs REST, la ruta sol contenir la id, ex:
 #### ANOTACIONS:
 
 Funcionalitats parcials o faltants: Xat en viu complert (L'he estat intentant tres hores però ha sigut impossible arreglar-lo fins i tot amb loggers, debugging i ajuda de la IA. Només vull veure una solució i entendre el codi amb el token referenciat a javascript. Terrible), data-seed (no m'ha donat temps), documentació auto-generada en format XML i bona gestió de les branques a git (amb l'aigua al coll he ignorat bastant aquesta bona pràctica tant important :c)
+
+La configuració de l'startup project per algún motiu no es manté. He fet push de la dev en lloc de PR perquè no em deixava resoldre els conflictes entre branques (una estava buida i l'altre no)
