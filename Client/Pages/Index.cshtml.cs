@@ -41,6 +41,7 @@ namespace Client.Pages
                         (json, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
                 }
+                Games = Games.OrderByDescending(g => g.VoteCount).ToList();
                 TopGames = Games.Take(10).ToList();
             }
             catch (Exception ex)

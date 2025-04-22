@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using API.Model;
 
-namespace Client.DTOs
+namespace API.DTOs
 {
     public class GameGetDTO
     {
