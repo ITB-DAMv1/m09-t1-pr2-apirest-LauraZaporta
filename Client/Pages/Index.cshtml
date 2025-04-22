@@ -22,7 +22,8 @@
                     <th>Títol</th>
                     <th>Dev team</th>
                     <th>Vots</th>
-                    <th>Accions</th>
+                    <th>Més</th>
+                    <th>Vot Actiu</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,6 +35,22 @@
                         <td>@game.VoteCount</td>
                         <td>
                             <a href="/DetailPage?id=@game.Id" class="btn btn-outline-info">Detalls</a>
+                        </td>
+                        <td>
+                            @if (Model.LoggedIn)
+                            {
+                                <form method="post" asp-page-handler="Vote" asp-route-id="@game.Id" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="VotActiu">
+                                        <i class="bi bi-hand-thumbs-down"></i> Votar/Retirar vot
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <button class="btn btn-outline-secondary btn-sm" disabled title="Votar (Només usuaris registrats)">
+                                    <i class="bi bi-hand-thumbs-up"></i> Votar
+                                </button>
+                            }
                         </td>
                     </tr>
                 }

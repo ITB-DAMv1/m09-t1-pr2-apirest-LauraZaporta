@@ -213,7 +213,7 @@ namespace API.Controllers
         // Votació
         // -------
         [Authorize] //Per tots els rols existents 
-        [HttpPut("vote")]
+        [HttpPut("vote/{id}")]
         public async Task<ActionResult<Game>> VoteGame(int id)
         {
             try
