@@ -12,13 +12,20 @@ html {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 body {
-  margin-bottom: 60px;
+    flex: 1;
+}
+
+main {
+    flex: 1;
 }
 
 .spacer-top {
@@ -64,4 +71,65 @@ body {
 table th, table td {
     padding: 8px;
     text-align: center;
+}
+
+#Admin {
+    opacity: 0;
+    color: white;
+    padding-right: 25px;
+}
+#Admin:hover {
+    opacity: 1;
+}
+
+/*HEADER*/
+header {
+    background-color: #0e77ae;
+    min-height: 100px;
+    width: 100%;
+    border-bottom: solid darkblue 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 25px;
+    padding-left: 25px;
+    border-radius: 20px;
+}
+
+header nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding-left: 25px;
+}
+
+header nav a {
+    color: white;
+    text-decoration: none;
+    padding-right: 15px;
+}
+
+header nav a:hover {
+    color: black;
+}
+
+/*FOOTER*/
+footer {
+    background-color: #0e77ae;
+    min-height: 70px;
+    width: 100%;
+    border-top: solid darkblue 5px;
+    margin-top: auto;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 30px;
+    border-radius: 20px;
+}
+
+footer p {
+    position: relative;
+    top: 7px;
 }
